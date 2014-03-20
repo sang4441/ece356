@@ -7,6 +7,14 @@
 <title>ECE 356 Deliverable</title>
 </head>
 <body>
+    <header>
+        <nav>
+            <ul>
+                <li>home</li>
+            </ul>
+        </nav>
+        <a href="/ece356/login.jsp">login</a>
+    </header>
 	<h2>Project - Deliverable 2</h2>
 	<p>Under Constructions</p>
 </body>
