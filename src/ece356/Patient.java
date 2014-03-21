@@ -14,10 +14,10 @@ public class Patient {
 	private int default_doc;
 	private String health_card;
 	private int sin;
-	private int current_health;
+	private String current_health;
 
 	public Patient(int id, int person_id, int default_doc, String health_card,
-			int sin, int current_health) {
+			int sin, String current_health) {
 		this.id = id;
 		this.person_id = person_id;
 		this.default_doc = default_doc;
@@ -68,7 +68,7 @@ public class Patient {
 		return default_doc;
 	}
 
-	public int getCurrentHealth() {
+	public String getCurrentHealth() {
 		return current_health;
 	}
 

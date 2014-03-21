@@ -38,15 +38,15 @@ public class BasicDBAO {
 		try {
 			con = getConnection();
 			stmt = con.createStatement();
-			ResultSet resultSet = stmt.executeQuery("SELECT * FROM Patient");
+			ResultSet resultSet = stmt.executeQuery("SELECT * FROM patients");
 			ret = new ArrayList<Patient>();
 			while (resultSet.next()) {
 				Patient e = new Patient(resultSet.getInt("id"),
-						resultSet.getInt("person_id"),
-						resultSet.getInt("default_doc"),
-						resultSet.getString("health_card"),
-						resultSet.getInt("sin"),
-						resultSet.getInt("current_health"));
+						resultSet.getInt("PersonID"),
+						resultSet.getInt("DefaultDoc"),
+						resultSet.getString("HealthCard"),
+						resultSet.getInt("SIN"),
+						resultSet.getString("CurrentHealth"));
 				ret.add(e);
 			}
 			return ret;
