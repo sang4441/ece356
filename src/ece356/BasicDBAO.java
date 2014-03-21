@@ -2,21 +2,101 @@ package ece356;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class BasicDBAO {
 	public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
-	public static final String user = "user_gdogrady";
-	public static final String pwd = "user_gdogrady";
+	private static final String user_id = "gdogrady";
+	public static final String user = "user_" + user_id;
+	public static final String pwd = "user_" + user_id;
 
-	public static void testConnection() throws ClassNotFoundException,
+	public static Connection getConnection() throws ClassNotFoundException,
 			SQLException {
-		Statement stmt;
-		Connection con;
 		Class.forName("com.mysql.jdbc.Driver");
-		con = DriverManager.getConnection(url, user, pwd);
-		stmt = con.createStatement();
-		con.close();
+		Connection con = DriverManager.getConnection(url, user, pwd);
+		Statement stmt = null;
+		try {
+			con.createStatement();
+			stmt = con.createStatement();
+			stmt.execute("USE ece356db_" + user_id);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return con;
 	}
+
+	public static ArrayList<Patient> getAllPatients()
+			throws ClassNotFoundException, SQLException {
+		Connection con = null;
+		Statement stmt = null;
+		ArrayList<Patient> ret = null;
+		try {
+			con = getConnection();
+			stmt = con.createStatement();
+			ResultSet resultSet = stmt.executeQuery("SELECT * FROM Patient");
+			ret = new ArrayList<Patient>();
+			while (resultSet.next()) {
+				Patient e = new Patient(resultSet.getInt("id"),
+						resultSet.getInt("person_id"),
+						resultSet.getInt("default_doc"),
+						resultSet.getString("health_card"),
+						resultSet.getInt("sin"),
+						resultSet.getInt("current_health"));
+				ret.add(e);
+			}
+			return ret;
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+	}
+
+	// public static ArrayList<Patient> query8(int empID, String empName,
+	// String job, int deptID, int salary) throws ClassNotFoundException,
+	// SQLException {
+	//
+	// Connection con = null;
+	// Statement stmt = null;
+	// ArrayList ret = null;
+	// try {
+	// con = getConnection();
+	// stmt = con.createStatement();
+	// ResultSet resultSet = stmt
+	// .executeQuery(String
+	// .format("SELECT * "
+	// + "FROM Employee "
+	// + "WHERE (%d = -1 OR Employee.empID = %d) AND "
+	// + "		('%s' LIKE '' OR Employee.empName LIKE '%s') AND "
+	// + "		('%s' LIKE '' OR Employee.job LIKE '%s') AND "
+	// + "		(%d = -1 OR Employee.deptID = %d) AND "
+	// + "		(%d = -1 OR Employee.salary = %d)",
+	// empID, empID, empName, empName, job, job,
+	// deptID, deptID, salary, salary));
+	// ret = new ArrayList<Patient>();
+	// while (resultSet.next()) {
+	// Patient e = new Patient(resultSet.getInt("empID"),
+	// resultSet.getString("empName"),
+	// resultSet.getString("job"), resultSet.getInt("deptID"),
+	// resultSet.getInt("salary"));
+	// ret.add(e);
+	// }
+	// return ret;
+	// } finally {
+	// if (stmt != null) {
+	// stmt.close();
+	// }
+	// if (con != null) {
+	// con.close();
+	// }
+	// }
+	// }
 }
