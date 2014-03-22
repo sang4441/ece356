@@ -1,5 +1,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="ece356.entity.Patient" %>
+<%@page import="ece356.entity.Person" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -7,6 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>ECE 356 Deliverable</title>
+
+<link rel="stylesheet" type="text/css" href="/ece356/css/style.css">
 </head>
 <%
 ArrayList<Patient> patientList;
@@ -16,6 +19,12 @@ search = (Patient)(request.getAttribute("search") == null ? new Patient() : requ
 %>
 <body>
     <header>
+        <%
+        Person user = (Person)request.getSession().getAttribute("user");
+        if(user != null) {
+            out.println(String.format("<span>Hello, %s!</span>", user.getNameFirst()));
+        }
+        %>
         <nav>
             <ul>
                 <li>home</li>
