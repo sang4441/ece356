@@ -16,6 +16,15 @@ public class Patient {
 	private int sin;
 	private String current_health;
 
+	public Patient() {
+		this.id = -1;
+		this.person_id = -1;
+		this.default_doc = -1;
+		this.health_card = "";
+		this.sin = -1;
+		this.current_health = "";
+	}
+
 	public Patient(int id, int person_id, int default_doc, String health_card,
 			int sin, String current_health) {
 		this.id = id;

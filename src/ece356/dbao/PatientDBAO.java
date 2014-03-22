@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ece356.entity.Patient;
 
@@ -14,6 +16,7 @@ public class PatientDBAO {
 	private static final String user_id = "gdogrady";
 	public static final String user = "user_" + user_id;
 	public static final String pwd = "user_" + user_id;
+	private static final Logger logger = Logger.getLogger("ece356");
 
 	public static Connection getConnection() throws ClassNotFoundException,
 			SQLException {
@@ -62,43 +65,48 @@ public class PatientDBAO {
 		}
 	}
 
-	// public static ArrayList<Patient> query8(int empID, String empName,
-	// String job, int deptID, int salary) throws ClassNotFoundException,
-	// SQLException {
-	//
-	// Connection con = null;
-	// Statement stmt = null;
-	// ArrayList ret = null;
-	// try {
-	// con = getConnection();
-	// stmt = con.createStatement();
-	// ResultSet resultSet = stmt
-	// .executeQuery(String
-	// .format("SELECT * "
-	// + "FROM Employee "
-	// + "WHERE (%d = -1 OR Employee.empID = %d) AND "
-	// + "		('%s' LIKE '' OR Employee.empName LIKE '%s') AND "
-	// + "		('%s' LIKE '' OR Employee.job LIKE '%s') AND "
-	// + "		(%d = -1 OR Employee.deptID = %d) AND "
-	// + "		(%d = -1 OR Employee.salary = %d)",
-	// empID, empID, empName, empName, job, job,
-	// deptID, deptID, salary, salary));
-	// ret = new ArrayList<Patient>();
-	// while (resultSet.next()) {
-	// Patient e = new Patient(resultSet.getInt("empID"),
-	// resultSet.getString("empName"),
-	// resultSet.getString("job"), resultSet.getInt("deptID"),
-	// resultSet.getInt("salary"));
-	// ret.add(e);
-	// }
-	// return ret;
-	// } finally {
-	// if (stmt != null) {
-	// stmt.close();
-	// }
-	// if (con != null) {
-	// con.close();
-	// }
-	// }
-	// }
+	public static ArrayList<Patient> searchPatient(int id, int person_id,
+			int default_doc, String health_card, int sin, String current_health)
+			throws ClassNotFoundException, SQLException {
+
+		Connection con = null;
+		Statement stmt = null;
+		ArrayList ret = null;
+		try {
+			con = getConnection();
+			stmt = con.createStatement();
+			String query = String.format("SELECT * " + "FROM patients "
+					+ "WHERE (%d = 0 OR patients.id = %d) AND "
+					+ "		(%d = 0 OR patients.PersonID = %d) AND "
+					+ "		(%d = 0 OR patients.DefaultDoc = %d) AND "
+					+ "		('%s' LIKE '' OR patients.HealthCard LIKE '%s') AND "
+					+ "		(%d = 0 OR patients.SIN = %d) AND "
+					+ "		('%s' LIKE '' OR patients.CurrentHealth LIKE '%s')",
+					id, id, person_id, person_id, default_doc, default_doc,
+					health_card, health_card, sin, sin, current_health,
+					current_health);
+			logger.log(Level.INFO, query);
+
+			ResultSet resultSet = stmt.executeQuery(query);
+			ret = new ArrayList<Patient>();
+			while (resultSet.next()) {
+				Patient e = new Patient(resultSet.getInt("id"),
+						resultSet.getInt("PersonID"),
+						resultSet.getInt("DefaultDoc"),
+						resultSet.getString("HealthCard"),
+						resultSet.getInt("SIN"),
+						resultSet.getString("CurrentHealth"));
+				ret.add(e);
+			}
+
+			return ret;
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+	}
 }
