@@ -2,8 +2,6 @@ package ece356.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -14,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ece356.dbao.PersonDBAO;
 import ece356.entity.Person;
+import ece356.helpers.ServletHelper;
 
 /**
  * Servlet implementation class PatientServlet
@@ -31,25 +30,24 @@ public class PersonServlet extends HttpServlet {
 		super();
 	}
 
-	private void logParameters(HttpServletRequest request) {
-		Enumeration<String> params = request.getParameterNames();
-		while (params.hasMoreElements()) {
-			String paramName = (String) params.nextElement();
-			logger.log(Level.INFO, "Attribute Name - " + paramName
-					+ ", Value - " + request.getParameter(paramName));
-		}
-	}
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String url = "/login.jsp";
-		getServletContext().getRequestDispatcher(url)
-				.forward(request, response);
+
+		String url = "login.jsp";
+
+		// check if logout
+		if (request.getParameterMap().containsKey("logout")) {
+			// logout by removing session variable
+			request.getSession().removeAttribute("user");
+			ServletHelper.redirect(response, "/ece356/index.jsp");
+		} else {
+			request.getRequestDispatcher(url).forward(request, response);
+		}
+
 	}
 
 	/**
@@ -60,28 +58,49 @@ public class PersonServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String url;
+		boolean success = false;
 
 		try {
-			logParameters(request);
+			ServletHelper.logParameters(request);
 
 			// !TODO: check if they are already logged in with the session
 			// variable
+			String username = ServletHelper.getString(request, "username");
+			String password = ServletHelper.getString(request, "password");
 
-			String username = getString(request, "username");
-			String password = getString(request, "password");
 			// find user/pass combo
 			Person user = PersonDBAO.login(username, password);
+
 			// set user in session data
 			if (user == null) {
 				// failed login
-				url = "/login.jsp";
+				url = "/ece356/login.jsp";
 				// add error messages for output
 				request.setAttribute("ErrorMessage",
 						"username / password combination not found.");
 			} else {
 				// success
 				request.getSession().setAttribute("user", user);
-				url = "/index.jsp";
+				// get homepage
+				switch (user.getRoleID()) {
+				// patient
+				case 1:
+					url = String.format("/ece356/patient/%d", user.getId());
+					break;
+				// doctor
+				case 2:
+					url = String.format("/ece356/doctor/%d", user.getId());
+					break;
+				// staff
+				case 3:
+					url = String.format("/ece356/staff/%d", user.getId());
+					break;
+				// error
+				default:
+					throw new Exception("Role does not exist");
+
+				}
+				success = true;
 			}
 
 		} catch (ClassNotFoundException ex) {
@@ -94,8 +113,12 @@ public class PersonServlet extends HttpServlet {
 			request.setAttribute("exception", ex);
 			url = "/error.jsp";
 		}
-		getServletContext().getRequestDispatcher(url)
-				.forward(request, response);
+		if (success) {
+			ServletHelper.redirect(response, url);
+		} else {
+			getServletContext().getRequestDispatcher(url).forward(request,
+					response);
+		}
 	}
 
 	/**
@@ -112,16 +135,6 @@ public class PersonServlet extends HttpServlet {
 	protected void doDelete(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	}
-
-	private int getInt(HttpServletRequest request, String key) {
-		String tmp = request.getParameter(key);
-		return tmp == null || tmp.isEmpty() ? 0 : Integer.parseInt(tmp);
-	}
-
-	private String getString(HttpServletRequest request, String key) {
-		String tmp = request.getParameter(key);
-		return tmp == null ? "" : tmp;
 	}
 
 }

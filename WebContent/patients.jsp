@@ -23,6 +23,9 @@ search = (Patient)(request.getAttribute("search") == null ? new Patient() : requ
         Person user = (Person)request.getSession().getAttribute("user");
         if(user != null) {
             out.println(String.format("<span>Hello, %s!</span>", user.getNameFirst()));
+            out.println("<a href='PersonServlet?logout'>logout</a>");
+        } else {
+        	out.println("<a href='PersonServlet'>login</a>");
         }
         %>
         <nav>
@@ -30,7 +33,6 @@ search = (Patient)(request.getAttribute("search") == null ? new Patient() : requ
                 <li>home</li>
             </ul>
         </nav>
-        <a href="/ece356/login.jsp">login</a>
     </header>
 	<%
 	    if (patientList != null) {

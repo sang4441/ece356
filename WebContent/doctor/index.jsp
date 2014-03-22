@@ -13,10 +13,10 @@
         <%
         Person user = (Person)request.getSession().getAttribute("user");
         if(user != null) {
-        	out.println(String.format("<span>Hello, %s!</span>", user.getNameFirst()));
-        	out.println("<a href='PersonServlet?logout'>logout</a>");
+            out.println(String.format("<span>Hello, %s!</span>", user.getNameFirst()));
+            out.println("<a href='/ece356/PersonServlet?logout'>logout</a>");
         } else {
-            out.println("<a href=\"/ece356/login.jsp\">login</a>");
+            out.println("<a href='/ece356/PersonServlet'>login</a>");
         }
         %>
         <nav>
@@ -25,8 +25,8 @@
             </ul>
         </nav>
     </header>
-	<h2>Project - Deliverable 2</h2>
-	<p>Under Constructions</p>
-	<a href="PatientServlet">patients</a>
+    <h2>Doctor Dashboard</h2>
+    <p>Under Constructions</p>
+    <a href="PatientServlet">patients</a>
 </body>
 </html> 
