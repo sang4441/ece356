@@ -1,4 +1,4 @@
-package ece356;
+package ece356.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -9,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import ece356.dbao.PatientDBAO;
 
 /**
  * Servlet implementation class PatientServlet
@@ -29,7 +31,7 @@ public class PatientServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String url;
 		try {
-			ArrayList patients = BasicDBAO.getAllPatients();
+			ArrayList patients = PatientDBAO.getAllPatients();
 			request.setAttribute("patientList", patients);
 			url = "/patients.jsp";
 		} catch (ClassNotFoundException ex) {

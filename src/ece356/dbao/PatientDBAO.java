@@ -1,4 +1,4 @@
-package ece356;
+package ece356.dbao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class BasicDBAO {
+import ece356.entity.Patient;
+
+public class PatientDBAO {
 	public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
 	private static final String user_id = "gdogrady";
 	public static final String user = "user_" + user_id;
