@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ece356.entity.Person;
 import ece356.helpers.ServletHelper;
@@ -34,7 +35,13 @@ public class IndexServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String url = "/";
-		Person user = (Person) request.getSession().getAttribute("user");
+		Person user = null;
+		HttpSession session = request.getSession(false);
+
+		if (session != null) {
+			user = (Person) session.getAttribute("user");
+		}
+
 		if (user != null) {
 			// get homepage
 			// possibly forward to separate index pages. bingo

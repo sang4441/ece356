@@ -41,11 +41,11 @@ public class PersonServlet extends HttpServlet {
 
 		// check if logout
 		if (request.getParameterMap().containsKey("logout")) {
-			// logout by removing session variable
-			request.getSession().removeAttribute("user");
+			// logout
+			request.getSession(false).invalidate();
 			ServletHelper.redirect(response, "/ece356/index.jsp");
 		} else {
-			request.getRequestDispatcher(url).forward(request, response);
+			ServletHelper.forward(request, response, url);
 		}
 
 	}
@@ -76,7 +76,7 @@ public class PersonServlet extends HttpServlet {
 				// failed login
 				url = "/ece356/login.jsp";
 				// add error messages for output
-				request.setAttribute("ErrorMessage",
+				ServletHelper.addErrorMessage(request,
 						"username / password combination not found.");
 			} else {
 				// success

@@ -38,7 +38,8 @@ public class PatientServlet extends HttpServlet {
 		request.setAttribute("patient", patient);
 		ArrayList<Visit> visits = PatientDBAO.getVisitsByPatientID(id);
 		request.setAttribute("visits", visits);
-		ServletHelper.log(visits, "visits");
+
+		// visits, "visits");
 		ServletHelper.forward(request, response, "/patient/index.jsp");
 
 	}
@@ -71,11 +72,11 @@ public class PatientServlet extends HttpServlet {
 			ServletHelper.logParameters(request);
 			String pathInfo = request.getPathInfo() == null ? "" : request
 					.getPathInfo();
-			ServletHelper.log(pathInfo);
+			log(pathInfo);
 			// TODO: better url routing
 			// parse url path
 			String[] path = pathInfo.split("/");
-			ServletHelper.log(path.length);
+			log(String.format("%d", path.length));
 			if (path.length > 1) {
 				if (path.length > 2) {
 					searchPatients(request, response);

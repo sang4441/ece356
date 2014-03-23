@@ -1,6 +1,7 @@
 package ece356.helpers;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
 
 import ece356.entity.Person;
@@ -25,7 +26,12 @@ public class PageTemplate {
 	public static void header(JspWriter out, HttpServletRequest request) {
 		try {
 			out.println("<header>");
-			Person user = (Person) request.getSession().getAttribute("user");
+			Person user = null;
+			HttpSession session = request.getSession(false);
+
+			if (session != null) {
+				user = (Person) session.getAttribute("user");
+			}
 
 			if (user != null) {
 				out.println(String.format("<span>Hello, %s!</span>",

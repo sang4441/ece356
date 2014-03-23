@@ -66,10 +66,15 @@ public class ServletHelper {
 			out = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH)
 					.parse(date);
 		} catch (ParseException e) {
-			ServletHelper.log(e);
+			log(e);
 			out = new Date();
 		}
 		return out;
+	}
+
+	public static void addErrorMessage(HttpServletRequest request,
+			String message) {
+		// request.setAttribute("ErrorMessage", message);
 	}
 
 }
