@@ -16,7 +16,7 @@
         	out.println(String.format("<span>Hello, %s!</span>", user.getNameFirst()));
         	out.println("<a href='PersonServlet?logout'>logout</a>");
         } else {
-            out.println("<a href=\"/ece356/login.jsp\">login</a>");
+            out.println("<a href='PersonServlet'>login</a>");
         }
         %>
         <nav>
@@ -27,6 +27,5 @@
     </header>
 	<h2>Project - Deliverable 2</h2>
 	<p>Under Constructions</p>
-	<a href="PatientServlet">patients</a>
 </body>
 </html> 

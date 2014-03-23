@@ -98,11 +98,9 @@ public class PersonServlet extends HttpServlet {
 				// error
 				default:
 					throw new Exception("Role does not exist");
-
 				}
 				success = true;
 			}
-
 		} catch (ClassNotFoundException ex) {
 			request.setAttribute("exception", ex);
 			url = "/error.jsp";
@@ -113,11 +111,11 @@ public class PersonServlet extends HttpServlet {
 			request.setAttribute("exception", ex);
 			url = "/error.jsp";
 		}
+
 		if (success) {
 			ServletHelper.redirect(response, url);
 		} else {
-			getServletContext().getRequestDispatcher(url).forward(request,
-					response);
+			ServletHelper.forward(request, response, url);
 		}
 	}
 

@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ece356.entity.Patient;
+import ece356.entity.Visit;
+import ece356.helpers.ServletHelper;
 
 public class PatientDBAO {
 	public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
@@ -63,6 +65,87 @@ public class PatientDBAO {
 				con.close();
 			}
 		}
+	}
+
+	public static Patient getByID(int id) throws SQLException {
+		Connection con = null;
+		Statement stmt = null;
+		Patient patient = null;
+		try {
+			con = getConnection();
+			stmt = con.createStatement();
+			String query = String.format("SELECT * FROM patients "
+					+ "WHERE patients.id = '%d' " + "LIMIT 1", id);
+			logger.log(Level.INFO, "getByID:" + query);
+
+			ResultSet resultSet = stmt.executeQuery(query);
+			while (resultSet.next()) {
+				patient = new Patient(resultSet.getInt("id"),
+						resultSet.getInt("PersonID"),
+						resultSet.getInt("DefaultDoc"),
+						resultSet.getString("HealthCard"),
+						resultSet.getInt("SIN"),
+						resultSet.getString("CurrentHealth"));
+			}
+
+			return patient;
+		} catch (ClassNotFoundException e) {
+			ServletHelper.log(e);
+		} catch (Exception e) {
+			ServletHelper.log(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		return patient;
+	}
+
+	public static ArrayList<Visit> getVisitsByPatientID(int id)
+			throws SQLException {
+		Connection con = null;
+		Statement stmt = null;
+		ArrayList<Visit> visits = new ArrayList<Visit>();
+		try {
+			con = getConnection();
+			stmt = con.createStatement();
+			String query = String.format("SELECT * FROM visits "
+					+ "WHERE visits.PatientID = %d " + "LIMIT 1", id);
+			logger.log(Level.INFO, "getByVisitID:" + query);
+
+			ResultSet resultSet = stmt.executeQuery(query);
+			while (resultSet.next()) {
+				Visit visit = new Visit(resultSet.getInt("id"),
+						resultSet.getInt("PatientID"),
+						ServletHelper.toDate(resultSet.getString("dATE")),
+						resultSet.getInt("Length"),
+						resultSet.getString("Prescription"),
+						resultSet.getString("Diagnosis"),
+						resultSet.getInt("DoctorID"),
+						ServletHelper.toDate(resultSet
+								.getString("DateModified")),
+						resultSet.getString("Comment"),
+						resultSet.getInt("InitialID"));
+				visits.add(visit);
+			}
+
+			return visits;
+		} catch (ClassNotFoundException e) {
+			ServletHelper.log(e);
+		} catch (Exception e) {
+			ServletHelper.log(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		return null;
 	}
 
 	public static ArrayList<Patient> searchPatient(int id, int person_id,

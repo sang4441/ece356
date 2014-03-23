@@ -1,7 +1,11 @@
 package ece356.helpers;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ServletHelper {
-	private static Logger logger = Logger.getLogger("ece356");
+	private static Logger logger = Logger.getLogger("ece356.servlet");
 
 	public static void logParameters(HttpServletRequest request) {
 		Enumeration<String> params = request.getParameterNames();
@@ -20,6 +24,17 @@ public class ServletHelper {
 			logger.log(Level.INFO, "Attribute Name - " + paramName
 					+ ", Value - " + request.getParameter(paramName));
 		}
+	}
+
+	public static <T> void log(T message) {
+		String out = message == null ? "null" : message.toString();
+		logger.log(Level.INFO, out);
+	}
+
+	public static <T> void log(T message, String key) {
+		String out = key + ": ";
+		out += message == null ? "null" : message.toString();
+		logger.log(Level.INFO, out);
 	}
 
 	public static void redirect(HttpServletResponse response, String url)
@@ -43,6 +58,18 @@ public class ServletHelper {
 	public static String getString(HttpServletRequest request, String key) {
 		String tmp = request.getParameter(key);
 		return tmp == null ? "" : tmp;
+	}
+
+	public static Date toDate(String date) {
+		Date out = null;
+		try {
+			out = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH)
+					.parse(date);
+		} catch (ParseException e) {
+			ServletHelper.log(e);
+			out = new Date();
+		}
+		return out;
 	}
 
 }
