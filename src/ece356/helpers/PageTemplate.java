@@ -36,9 +36,9 @@ public class PageTemplate {
 			if (user != null) {
 				out.println(String.format("<span>Hello, %s!</span>",
 						user.getNameFirst()));
-				out.println("<a href='/ece356/PersonServlet?logout'>logout</a>");
+				out.println("<a href='/ece356/Login?logout'>logout</a>");
 			} else {
-				out.println("<a href='/ece3356/PersonServlet'>login</a>");
+				out.println("<a href='/ece3356/Login'>login</a>");
 			}
 			out.println("<nav><ul><li>home</li></ul></nav></header>");
 		} catch (Exception e) {

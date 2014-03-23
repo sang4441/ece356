@@ -5,18 +5,14 @@ public class Doctor {
 	private int id;
 	private int person_id;
 
-
 	public Doctor() {
 
 	}
 
-	public Doctor(int id, int person_id){
-
+	public Doctor(int id, int person_id) {
 		this.id = id;
 		this.person_id = person_id;
-
 	}
-
 
 	/**
 	 * Get the value of salary
@@ -45,9 +41,7 @@ public class Doctor {
 	public void setPersonID(int person_id) {
 
 		this.person_id = person_id;
-		
+
 	}
-
-
 
 }

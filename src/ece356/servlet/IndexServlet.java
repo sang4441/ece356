@@ -10,12 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ece356.dbao.DoctorDBAO;
 import ece356.dbao.PatientDBAO;
+import ece356.entity.Doctor;
 import ece356.entity.Patient;
 import ece356.entity.Person;
 import ece356.helpers.ServletHelper;
 
-@WebServlet("/")
+@WebServlet(urlPatterns = { "/", "/index", "/IndexServlet", "/ece356/Dashboard" })
 public class IndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +37,7 @@ public class IndexServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			// TODO Auto-generated method stub
-			String url = "/";
+			String url = "/ece356/index.jsp";
 			Person user = null;
 			HttpSession session = request.getSession(false);
 
@@ -52,26 +54,28 @@ public class IndexServlet extends HttpServlet {
 				case 1:
 					Patient patient = PatientDBAO.getPatientByPersonID(user
 							.getId());
-
-					url = String.format("/ece356/patient/dashboard.jsp",
-							patient.getID());
+					request.setAttribute("patient", patient);
+					url = "/patient/dashboard.jsp";
 					break;
 				// doctor
-				// case 2:
-				// Doctor doc = DoctorDBAO.getDocByPersonID(user.getId());
-				// url = String
-				// .format("/ece356/doctor/dashboard.jsp", doc.getID());
-				// break;
+				case 2:
+					Doctor doc = DoctorDBAO.getDocByPersonID(user.getId());
+					request.setAttribute("doctor", doc);
+					url = "/doctor/dashboard.jsp";
+					break;
 				// staff
 				// case 3:
+				// Staff staff = StaffDBAO.getStaffByPersonID(user.getId());
+				//
 				// url = String.format("/ece356/staff/dashboard.jsp",
-				// staff.getID());
+				// user.getId());
 				// break;
 				// error
 				default:
 					throw new Exception("Role does not exist");
 				}
 				request.getRequestDispatcher(url).include(request, response);
+				return;
 			}
 			ServletHelper.forward(request, response, url);
 		} catch (SQLException e) {
@@ -88,6 +92,7 @@ public class IndexServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String test = "";
 	}
 
 }

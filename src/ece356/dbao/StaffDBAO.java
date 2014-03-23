@@ -13,7 +13,7 @@ import ece356.entity.Patient;
 import ece356.entity.Visit;
 import ece356.helpers.ServletHelper;
 
-public class PatientDBAO {
+public class StaffDBAO {
 	public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
 	private static final String user_id = "gdogrady";
 	public static final String user = "user_" + user_id;
@@ -194,7 +194,7 @@ public class PatientDBAO {
 		}
 	}
 
-	public static Patient getPatientByPersonID(int personID)
+	public static Patient getPatientByPersonID(long personID)
 			throws ClassNotFoundException, SQLException {
 		Connection con = null;
 		Statement stmt = null;

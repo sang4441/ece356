@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 		if (request.getParameterMap().containsKey("logout")) {
 			// logout
 			request.getSession(false).invalidate();
-			ServletHelper.redirect(response, "index.jsp");
+			ServletHelper.redirect(response, "/ece356");
 		} else {
 			request.getRequestDispatcher("login.jsp")
 					.include(request, response);
@@ -57,7 +57,6 @@ public class LoginServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String url;
-		boolean success = false;
 
 		try {
 			ServletHelper.logParameters(request);
@@ -81,7 +80,7 @@ public class LoginServlet extends HttpServlet {
 				// success
 				request.getSession().setAttribute("user", user);
 				// get homepage
-				ServletHelper.redirect(response, "/ece356/index.jsp");
+				ServletHelper.redirect(response, "/ece356/Dashboard");
 				return;
 			}
 		} catch (ClassNotFoundException ex) {
