@@ -84,7 +84,7 @@ public class PersonServlet extends HttpServlet {
 				// get homepage
 				// TODO: user.getId should be user.getPatientId or
 				// user.getDoctorId
-				switch (user.getRoleID()) {
+				switch ((int) user.getRoleID()) {
 				// patient
 				case 1:
 					url = String.format("/ece356/Patient/%d", user.getId());

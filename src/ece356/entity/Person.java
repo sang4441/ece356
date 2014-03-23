@@ -17,9 +17,25 @@ public class Person {
 
 	}
 
+	public Person(String nameLast, String nameFirst, String phone,
+			String username, String password, String street, String city,
+			String province, String postalCode, int roleID) {
+		this.NameLast = nameLast;
+		this.NameFirst = nameFirst;
+		this.Phone = phone;
+		this.Username = username;
+		this.Password = password;
+		this.Street = street;
+		this.City = city;
+		this.Province = province;
+		this.PostalCode = postalCode;
+		this.RoleID = roleID;
+	}
+
 	public Person(int id, String nameLast, String nameFirst, String phone,
 			String username, String password, String street, String city,
 			String province, String postalCode, int roleID) {
+		this.id = id;
 		this.NameLast = nameLast;
 		this.NameFirst = nameFirst;
 		this.Phone = phone;

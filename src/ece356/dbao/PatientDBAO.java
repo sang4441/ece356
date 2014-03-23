@@ -194,7 +194,7 @@ public class PatientDBAO {
 		}
 	}
 
-	public static Patient getPatientByPersonID(int personID)
+	public static Patient getPatientByPersonID(long personID)
 			throws ClassNotFoundException, SQLException {
 		Connection con = null;
 		Statement stmt = null;

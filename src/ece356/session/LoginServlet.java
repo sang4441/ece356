@@ -94,6 +94,7 @@ public class LoginServlet extends HttpServlet {
 					break;
 				// doctor
 				case 2:
+					// Doctor doc = DoctorDBAO.getDocByPersonID(user.getId());
 					url = String.format("/ece356/Doctor/%d", user.getId());
 					break;
 				// staff

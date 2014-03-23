@@ -40,7 +40,6 @@ public class PersonDBAO {
 			throws ClassNotFoundException, SQLException {
 		Connection con = null;
 		Statement stmt = null;
-		ArrayList<Person> ret = null;
 		try {
 			con = getConnection();
 			stmt = con.createStatement();
