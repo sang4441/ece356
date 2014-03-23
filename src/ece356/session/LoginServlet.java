@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ece356.dbao.PatientDBAO;
 import ece356.dbao.PersonDBAO;
-import ece356.entity.Patient;
 import ece356.entity.Person;
 import ece356.helpers.ServletHelper;
 
@@ -83,29 +81,8 @@ public class LoginServlet extends HttpServlet {
 				// success
 				request.getSession().setAttribute("user", user);
 				// get homepage
-				// TODO: user.getId should be user.getPatientId or
-				// user.getDoctorId
-				switch (user.getRoleID()) {
-				// patient
-				case 1:
-					Patient patient = PatientDBAO.getPatientByPersonID(user
-							.getId());
-					url = String.format("/ece356/Patient/%d", patient.getID());
-					break;
-				// doctor
-				case 2:
-					// Doctor doc = DoctorDBAO.getDocByPersonID(user.getId());
-					url = String.format("/ece356/Doctor/%d", user.getId());
-					break;
-				// staff
-				case 3:
-					url = String.format("/ece356/Staff/%d", user.getId());
-					break;
-				// error
-				default:
-					throw new Exception("Role does not exist");
-				}
-				success = true;
+				ServletHelper.redirect(response, "/ece356/index.jsp");
+				return;
 			}
 		} catch (ClassNotFoundException ex) {
 			request.setAttribute("exception", ex);
@@ -118,11 +95,7 @@ public class LoginServlet extends HttpServlet {
 			url = "/error.jsp";
 		}
 
-		if (success) {
-			ServletHelper.redirect(response, url);
-		} else {
-			ServletHelper.forward(request, response, url);
-		}
+		ServletHelper.forward(request, response, url);
 	}
 
 	/**
