@@ -2,40 +2,25 @@
 <%@page import="ece356.entity.Person" %>
 <%@page import="ece356.entity.Visit" %>
 <%@page import="ece356.helpers.HtmlHelper" %>
+<%@page import="ece356.helpers.PageTemplate" %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="java.util.Date" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ECE 356 Deliverable</title>
-</head>
-<body>
-    <header>
-        <%
-        Person user = (Person)request.getSession().getAttribute("user");
-        if(user != null) {
-            out.println(String.format("<span>Hello, %s!</span>", user.getNameFirst()));
-            out.println("<a href='/ece356/PersonServlet?logout'>logout</a>");
-        } else {
-            out.println("<a href='/ece3356/PersonServlet'>login</a>");
-        }
-        %>
-        <nav>
-            <ul>
-                <li>home</li>
-            </ul>
-        </nav>
-    </header>
+<%
+
+PageTemplate.html(out, request, "ECE 356 Deliverable 2");
+PageTemplate.header(out, request); 
+
+%>
+    
     <h2>Patient Dashboard</h2>
     <%
 	 /*
 	    List of all past visits
 	 */
 	ArrayList<Visit> visits = (ArrayList)request.getAttribute("visits");
-    if (visits != null) {
+    if (visits != null && visits.size() > 0) {
         out.println("<h1>Past Visits</h1>");
         HtmlHelper.startTable(out);
         HtmlHelper.tableHeader(out, new String[]{"id",
@@ -64,8 +49,9 @@
         	HtmlHelper.endTR(out);
         }
         HtmlHelper.endTable(out);
+    } else {
+    	out.println("<h1>No Past Visits</h1>");
     }
-%>
     
-</body>
-</html> 
+    PageTemplate.closeHtml(out, request);
+%>

@@ -113,7 +113,8 @@ public class PatientDBAO {
 			con = getConnection();
 			stmt = con.createStatement();
 			String query = String.format("SELECT * FROM visits "
-					+ "WHERE visits.PatientID = %d " + "LIMIT 1", id);
+					+ "WHERE visits.PatientID = %d "
+					+ "ORDER BY visits.Date DESC", id);
 			logger.log(Level.INFO, "getByVisitID:" + query);
 
 			ResultSet resultSet = stmt.executeQuery(query);

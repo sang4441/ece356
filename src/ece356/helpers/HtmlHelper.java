@@ -1,11 +1,17 @@
 package ece356.helpers;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspWriter;
 
 public class HtmlHelper {
 	private static Logger logger = Logger.getLogger("ece356.html");
+
+	public static <T> void log(T message) {
+		String out = message == null ? "null" : message.toString();
+		logger.log(Level.INFO, out);
+	}
 
 	public static void startTable(JspWriter out) throws java.io.IOException {
 		out.println("<table>");
@@ -52,5 +58,4 @@ public class HtmlHelper {
 			throws java.io.IOException {
 		out.println("<td>" + attr.toString() + "</td>");
 	}
-
 }

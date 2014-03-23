@@ -82,10 +82,12 @@ public class PersonServlet extends HttpServlet {
 				// success
 				request.getSession().setAttribute("user", user);
 				// get homepage
+				// TODO: user.getId should be user.getPatientId or
+				// user.getDoctorId
 				switch (user.getRoleID()) {
 				// patient
 				case 1:
-					url = String.format("/ece356/patient/%d", user.getId());
+					url = String.format("/ece356/Patient/%d", user.getId());
 					break;
 				// doctor
 				case 2:
