@@ -44,6 +44,13 @@ public class Patient {
 		return id;
 	}
 
+	public void setID(int id) {
+
+		this.id = id;
+
+	}
+
+
 	/**
 	 * Get the value of deptID
 	 * 
@@ -51,6 +58,12 @@ public class Patient {
 	 */
 	public int getPersonID() {
 		return person_id;
+	}
+
+	public void setPersonID(int person_id) {
+
+		this.person_id = person_id;
+
 	}
 
 	/**
@@ -77,12 +90,29 @@ public class Patient {
 		return default_doc;
 	}
 
+	public void setDefaultDoc(int default_doc) {
+
+		this.default_doc = default_doc;
+	}
+
 	public String getCurrentHealth() {
 		return current_health;
 	}
 
+	public void setCurrentHealth(String current_health) {
+
+		this.current_health = current_health;
+
+	}
+
 	public int getHealthCard() {
 		return sin;
+	}
+
+	public void setHealthCard(String health_card) {
+
+		this.health_card = health_card;
+		
 	}
 
 }
