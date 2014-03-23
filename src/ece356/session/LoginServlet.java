@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ece356.dbao.PatientDBAO;
 import ece356.dbao.PersonDBAO;
+import ece356.entity.Patient;
 import ece356.entity.Person;
 import ece356.helpers.ServletHelper;
 
@@ -37,13 +39,11 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		String url = "login.jsp";
-
 		// check if logout
 		if (request.getParameterMap().containsKey("logout")) {
 			// logout
 			request.getSession(false).invalidate();
-			ServletHelper.redirect(response, "/ece356/index.jsp");
+			ServletHelper.redirect(response, "index.jsp");
 		} else {
 			request.getRequestDispatcher("login.jsp")
 					.include(request, response);
@@ -75,7 +75,7 @@ public class LoginServlet extends HttpServlet {
 			// set user in session data
 			if (user == null) {
 				// failed login
-				url = "/ece356/login.jsp";
+				url = "login.jsp";
 				// add error messages for output
 				ServletHelper.addErrorMessage(request,
 						"username / password combination not found.");
@@ -88,15 +88,17 @@ public class LoginServlet extends HttpServlet {
 				switch (user.getRoleID()) {
 				// patient
 				case 1:
-					url = String.format("/ece356/Patient/%d", user.getId());
+					Patient patient = PatientDBAO.getPatientByPersonID(user
+							.getId());
+					url = String.format("/ece356/Patient/%d", patient.getID());
 					break;
 				// doctor
 				case 2:
-					url = String.format("/ece356/doctor/%d", user.getId());
+					url = String.format("/ece356/Doctor/%d", user.getId());
 					break;
 				// staff
 				case 3:
-					url = String.format("/ece356/staff/%d", user.getId());
+					url = String.format("/ece356/Staff/%d", user.getId());
 					break;
 				// error
 				default:

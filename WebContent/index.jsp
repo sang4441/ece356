@@ -11,13 +11,20 @@
 <body>
     <header>
         <%
-        Person user = (Person)request.getSession().getAttribute("user");
+        Person user = null;
+        HttpSession mySession = request.getSession(false);
+        
+        if(mySession != null) {
+        	user = (Person) mySession.getAttribute("user");
+        }
+        
         if(user != null) {
         	out.println(String.format("<span>Hello, %s!</span>", user.getNameFirst()));
-        	out.println("<a href='PersonServlet?logout'>logout</a>");
+        	out.println("<a href='/ece356/Login?logout'>logout</a>");
         } else {
-            out.println("<a href='PersonServlet'>login</a>");
+            out.println("<a href='/ece356/Login'>login</a>");
         }
+	        
         %>
         <nav>
             <ul>

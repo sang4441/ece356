@@ -155,7 +155,7 @@ public class PatientDBAO {
 
 		Connection con = null;
 		Statement stmt = null;
-		ArrayList ret = null;
+		ArrayList<Patient> ret = null;
 		try {
 			con = getConnection();
 			stmt = con.createStatement();
@@ -184,6 +184,39 @@ public class PatientDBAO {
 			}
 
 			return ret;
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+	}
+
+	public static Patient getPatientByPersonID(int personID)
+			throws ClassNotFoundException, SQLException {
+		Connection con = null;
+		Statement stmt = null;
+		try {
+			con = getConnection();
+			stmt = con.createStatement();
+			String query = String.format("SELECT * FROM patients "
+					+ "WHERE patients.PersonID = %d " + "LIMIT 1", personID);
+			logger.log(Level.INFO, query);
+
+			ResultSet resultSet = stmt.executeQuery(query);
+			Patient patient = null;
+			while (resultSet.next()) {
+				patient = new Patient(resultSet.getInt("id"),
+						resultSet.getInt("PersonID"),
+						resultSet.getInt("DefaultDoc"),
+						resultSet.getString("HealthCard"),
+						resultSet.getInt("SIN"),
+						resultSet.getString("CurrentHealth"));
+			}
+
+			return patient;
 		} finally {
 			if (stmt != null) {
 				stmt.close();
